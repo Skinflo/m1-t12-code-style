@@ -1,32 +1,35 @@
 import java.util.Scanner;
 
-public class CalculateDeposit { // Класс лучше назвать DepositCalculator. Сейчас он начинается с глагола, как метод
+public class DepositCalculator {
+    Scanner scanner = new Scanner(System.in);
+
     double calculateComplexPercent(double amount, double yearRate, int depositPeriod) {
         double pay = amount * Math.pow((1 + yearRate / 12), 12 * depositPeriod);
-        return countingParameters(pay, 2);
+        return roundValue(pay, 2);
     }
 
     double calculateSimplePercent(double amount, double yearRate, int depositPeriod) {
-        return countingParameters(amount + amount * yearRate * depositPeriod, 2);
+        return roundValue(amount + amount * yearRate * depositPeriod, 2);
     }
 
-    double countingParameters(double value, int places) { // изначально метод называл rnd, подразумевая что это глагол round
-        double scale = Math.pow(10, places);              // переводится как "округлить", что и делает метод
+    double roundValue(double value, int places) {
+        double scale = Math.pow(10, places);
         return Math.round(value * scale) / scale;
     }
 
     void calculateDeposits() {
         int period;
         int action;
-        Scanner scanner = new Scanner(System.in);
+        int amount;
+        double accumulation = 0;
 
         System.out.println("Введите сумму вклада в рублях:");
-        int amount = scanner.nextInt(); // объявить переменную amount лучше в блоке объявления, а здесь оставить инициализацию, как period и action
+        amount = scanner.nextInt();
         System.out.println("Введите срок вклада в годах:");
         period = scanner.nextInt( );
         System.out.println("Выберите тип вклада, 1 - вклад с обычным процентом, 2 - вклад с капитализацией:");
         action = scanner.nextInt();
-        double accumulation = 0; // эту тоже можно в блок объявления переменных выше
+
         if (action == 1) {
             accumulation = calculateSimplePercent(amount, 0.06, period);
         } else if (action == 2) {
@@ -36,8 +39,7 @@ public class CalculateDeposit { // Класс лучше назвать DepositC
     }
 
     public static void main(String[] args) {
-        new CalculateDeposit().calculateDeposits();
+        new DepositCalculator().calculateDeposits();
     }
 }
 
-// в целом по коду все как учили:)
